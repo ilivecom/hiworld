@@ -1,0 +1,19 @@
+name: Keepalive
+
+# Re-enable daily.yml every Sunday to prevent GitHub from auto-disabling
+# scheduled workflows after 60 days of repository inactivity.
+on:
+  schedule:
+    - cron: '0 8 * * 0'   # Every Sunday at UTC 08:00
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Re-enable daily workflow
+        run: gh workflow enable daily.yml --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

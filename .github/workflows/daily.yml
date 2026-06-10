@@ -1,0 +1,98 @@
+name: Daily AI & Tech Briefing
+
+on:
+  schedule:
+    # Target: UK morning ~08:00–10:00 BST (= UTC 07:00–09:00 in summer)
+    # GitHub scheduler peak delay is ~3–4 h; scheduling in UTC 03:xx–05:xx
+    # lets the actual run land around BST 07:30–09:30.
+    - cron: '30 3 * * *'   # UTC 03:30 — primary run
+    - cron: '0 4 * * *'    # UTC 04:00 — fallback 1
+    - cron: '30 4 * * *'   # UTC 04:30 — fallback 2
+  workflow_dispatch:        # Manual trigger: always generate, skip idempotency check
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to push generated HTML
+      issues: write     # needed to create alert issues on failure
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}   # always fetch latest main on re-run
+
+      - name: Check if today's briefing already exists
+        id: check
+        run: |
+          # Manual trigger: always generate, skip idempotency check
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "🔄 Manual trigger — skipping idempotency check"
+            exit 0
+          fi
+
+          TODAY=$(TZ=Europe/London date +'%Y-%m-%d')
+          echo "Today (UK): ${TODAY}"
+
+          if python3 -c "import json,sys; d=json.load(open('docs/archive.json')); sys.exit(0 if '${TODAY}' in [e.get('date','') for e in d] else 1)" 2>/dev/null; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "✅ Today's briefing already exists (${TODAY}) — skipping"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "⚠️  Briefing missing for ${TODAY} — generating now"
+          fi
+
+      - name: Set up Python 3.11
+        if: steps.check.outputs.skip == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: pip install -r requirements.txt
+
+      - name: Generate daily briefing
+        if: steps.check.outputs.skip == 'false'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python generate.py
+
+      - name: Commit and push
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          git config user.name  "hiworld Briefing Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          # Only commit when files actually changed
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "📰 Daily briefing $(TZ=Europe/London date +'%Y-%m-%d')" &&
+            git pull --rebase -X theirs origin main &&
+            git push
+          )
+
+      - name: Verify briefing and alert on missing
+        # Only check on scheduled runs — manual runs don't need the alert
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TODAY=$(TZ=Europe/London date +'%Y-%m-%d')
+          if python3 -c "import json,sys; d=json.load(open('docs/archive.json')); sys.exit(0 if '${TODAY}' in [e.get('date','') for e in d] else 1)" 2>/dev/null; then
+            echo "✅ Verified: ${TODAY} briefing exists"
+          else
+            echo "❌ Verification failed: ${TODAY} briefing is still missing — creating alert issue"
+            EXISTING=$(gh issue list --label "briefing-missing" --state open --json number --jq '.[0].number' 2>/dev/null || echo "")
+            if [ -z "$EXISTING" ]; then
+              gh issue create \
+                --title "⚠️ Daily briefing missing: ${TODAY}" \
+                --body "The scheduled workflow ran but the **${TODAY}** briefing was not generated. Check the [Actions log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) or trigger the workflow manually." \
+                --label "briefing-missing"
+            else
+              echo "Issue #${EXISTING} already exists — skipping duplicate"
+            fi
+            exit 1
+          fi
