@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hiworld daily · Wednesday, June 10, 2026</title>
+  <meta name="description" content="Daily AI &amp; tech briefing — Wednesday, June 10, 2026" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" />
+  <!-- Outfit ExtraBold: geometric sans-serif for the wordmark logo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ── Base ── */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.82;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    /* ── Logo — CSS wordmark, fixed top-left ── */
+    #logo {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      outline: none;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Outfit', -apple-system, "Helvetica Neue", sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.4px;
+      line-height: 1;
+      user-select: none;
+      transition: opacity 0.2s;
+    }
+    #logo:hover { opacity: 0.78; }
+    #logo .logo-hi    { color: #00C2B3; }
+    #logo .logo-world { color: #1a1a1a; }
+
+    /* ── Content card ── */
+    #content {
+      margin-top: 80px;
+      margin-left: auto;
+      margin-right: auto;
+      width: min(90%, 840px);
+      padding: 40px 42px 34px;
+      background-color: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+      border-radius: 24px;
+      margin-bottom: 26px;
+      backdrop-filter: saturate(180%) blur(18px);
+    }
+
+    /* ── Headings ── */
+    h1, h2, h3 {
+      position: relative;
+      padding-left: 15px;
+      font-weight: bold;
+      line-height: 1.2;
+      color: #1a1a1a;
+    }
+    h1::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 4px; height: 26px;
+      background-color: #00C2B3;
+      border-radius: 2px;
+    }
+    h2::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 2px; height: 18px;
+      background-color: rgba(0, 194, 179, 0.35);
+      border-radius: 1px;
+    }
+    h3::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 2px; height: 14px;
+      background-color: rgba(0, 194, 179, 0.35);
+      border-radius: 1px;
+    }
+
+    h1 { font-size: 32px; margin-top: 0; }
+    h2 { font-size: 24px; margin-top: 35px; }
+    h3 { font-size: 19px; margin-top: 28px; margin-bottom: 6px; }
+
+    h4, h5, h6 {
+      position: relative;
+      padding-left: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #333;
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+    h4 { font-size: 16px; }
+    h5, h6 { font-size: 15px; }
+
+    /* ── Body text & links ── */
+    p {
+      line-height: 1.7;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+    a { color: #008F84; text-decoration: none; transition: opacity 0.2s; }
+    a:hover { opacity: 0.7; }
+    strong { font-weight: 700; color: #1a1a1a; }
+    em { font-style: italic; color: #555; }
+
+    /* ── Lists ── */
+    ul, ol { padding-left: 1.5em; margin: 8px 0 16px; }
+    li { line-height: 1.7; color: #333; margin: 4px 0; }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: .85em;
+      background: #f3f4f6;
+      padding: .1em .35em;
+      border-radius: 4px;
+      color: #1a1a1a;
+    }
+
+    /* ── Blockquote ── */
+    blockquote {
+      border-left: 3px solid rgba(0, 194, 179, 0.5);
+      margin: 16px 0;
+      padding: 8px 16px;
+      background: #f9fefe;
+      border-radius: 0 8px 8px 0;
+      color: #555;
+    }
+
+    /* ── HR ── */
+    hr { border: none; border-top: 1px solid #eee; margin: 28px 0; }
+
+    /* ── Hero block ── */
+    .hero { margin-bottom: 12px; }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0 4px;
+      padding-left: 15px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: #6e6e73;
+    }
+    .hero-meta a { color: #008F84; text-decoration: none; }
+    .hero-divider { margin: 0 2px; color: #8e8e93; }
+    .hero-date { margin-left: 8px; color: #6e6e73; white-space: nowrap; }
+    .hero h1 { margin-top: 20px; margin-bottom: 0; }
+
+    /* ── Archive section ── */
+    .archive-section { margin-top: 40px; }
+    .archive-nav { margin: 0; }
+
+    details.month-item,
+    details.older-archive {
+      border-bottom: 1px solid #eee;
+    }
+    details.month-item:last-child,
+    details.older-archive:last-child { border-bottom: none; }
+
+    details.month-item > summary,
+    details.older-archive > summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      padding: 11px 5px;
+      font-size: 15px;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s;
+    }
+    details.month-item > summary::-webkit-details-marker,
+    details.older-archive > summary::-webkit-details-marker { display: none; }
+
+    details.month-item > summary::before {
+      content: "▶";
+      font-size: 10px;
+      margin-right: 8px;
+      color: #bbb;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    details.month-item[open] > summary::before { transform: rotate(90deg); }
+
+    details.older-archive > summary {
+      color: #008F84;
+      font-size: 14px;
+    }
+    details.older-archive > summary::before {
+      content: "▶";
+      font-size: 10px;
+      margin-right: 8px;
+      color: #00c2b3;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    details.older-archive[open] > summary::before { transform: rotate(90deg); }
+
+    details.month-item > summary:hover,
+    details.older-archive > summary:hover { background-color: #fafafa; }
+
+    .month-count {
+      font-size: 12px;
+      color: #bbb;
+      margin-left: 6px;
+    }
+
+    .day-list { list-style: none; padding: 0; margin: 0; }
+    .day-list li { border-top: 1px solid #f5f5f5; }
+    .day-list li a {
+      display: block;
+      padding: 9px 5px 9px 22px;
+      font-size: 14px;
+      color: #555;
+      text-decoration: none;
+      transition: padding-left 0.2s ease, background-color 0.2s ease;
+      font-variant-numeric: tabular-nums;
+    }
+    .day-list li a:hover {
+      background-color: #fafafa;
+      padding-left: 28px;
+    }
+    .day-list li.active a { color: #008F84; font-weight: 600; }
+    .older-months { padding-bottom: 4px; }
+
+    .today-tag {
+      font-size: 11px;
+      background: rgba(0,194,179,.12);
+      color: #00a396;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .no-archive { font-size: 14px; color: #999; }
+
+    /* ── Footer ── */
+    #footer {
+      width: min(90%, 840px);
+      margin: 0 auto 28px;
+      padding: 0 8px 8px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #8e8e93;
+    }
+    #footer a { color: #008F84; }
+    .footer-meta { margin-bottom: 4px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1150px) {
+      #logo {
+        position: absolute !important;
+        top: 14px;
+        left: 16px;
+        font-size: 20px;
+      }
+      #content { margin-top: 60px; padding: 34px 28px 28px; }
+    }
+    @media (max-width: 767px) {
+      #logo { font-size: 19px; }
+      #content {
+        margin-top: 56px;
+        width: calc(100% - 32px);
+        padding: 28px 18px 24px;
+        border-radius: 20px;
+      }
+      .hero { margin-bottom: 14px; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 22px; }
+      h3 { font-size: 18px; margin-top: 20px; }
+      p, li { line-height: 1.82; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CSS wordmark logo — "hi" in teal, "world" in near-black, Outfit ExtraBold -->
+  <a href="https://hiworld.uk/" id="logo" aria-label="hiworld home">
+    <span class="logo-hi">hi</span><span class="logo-world">world</span>
+  </a>
+
+  <div id="content">
+
+    <div class="hero">
+      <div class="hero-meta">
+        <a href="https://hiworld.uk/">hiworld</a>
+        <span class="hero-divider">·</span>
+        <a href="/">daily</a>
+        <span class="hero-date">Wednesday, June 10, 2026</span>
+      </div>
+      <h1>AI &amp; Tech Daily</h1>
+    </div>
+
+    <!-- Briefing body -->
+    <h1>🎯 <strong>hiworld daily</strong> — Wednesday, June 10, 2026</h1>
+<h2>🎯 Top 3 Today</h2>
+<p><strong>Headline</strong>:
+Anthropic Launches Claude Fable 5, a Frontier-Scale Creative-Writing Model</p>
+<p><strong>Source</strong>: AI Flash Report · 2026-06-10</p>
+<p><strong>Summary</strong>:</p>
+<p>Claude Fable 5 is positioned as a lighter, cheaper companion to Claude Opus/Sonnet for long-form fiction, scripts, and character voices.</p>
+<p>The new model mirrors the powerful Mythos architecture with added safety protocols and significantly outperforms competitors in software engineering and scientific research.</p>
+<ul>
+<li>Developers and creative teams using Claude for narrative-driven tasks.</li>
+</ul>
+<p><strong>Technical / Product angle</strong>:
+The model likely shares the 200K–1M token context range of recent Claude family models, balancing creative quality with cost efficiency.</p>
+<hr />
+<p><strong>Headline</strong>:
+OpenAI Reduces ChatGPT Memory Synthesis Compute Requirements by 5x, Enabling Free-Tier Access</p>
+<p><strong>Source</strong>: Build Fast With AI · 2026-06-06</p>
+<p><strong>Summary</strong>:</p>
+<p>OpenAI's Dreaming V3 automatically builds and updates user profiles through background synthesis, approximately 5x more compute-efficient than the prior system.</p>
+<p>Rollout began on June 4 to Plus and Pro US users, with free-tier access expected within weeks.</p>
+<ul>
+<li>Consumer-grade ChatGPT users and enterprise Plus/Pro subscribers.</li>
+</ul>
+<p><strong>Technical / Product angle</strong>:
+The system runs background synthesis after conversations, building memories without requiring explicit "remember this" commands, replacing previous user-prompt-dependent memory.</p>
+<hr />
+<p><strong>Headline</strong>:
+OpenAI, Anthropic, Google DeepMind, and Microsoft CEOs Call for Mandatory Synthetic DNA Screening</p>
+<p><strong>Source</strong>: Yellow.com · 2026-06-05</p>
+<p><strong>Summary</strong>:</p>
+<p>On June 5, the four chief executives signed a joint letter to Congress warning that advances in AI are eroding the technical barriers previously needed to weaponize biological material.</p>
+<p>AI models capable of providing step-by-step guidance lower the barrier for bad actors; the combination of accessible synthetic biology tools and powerful AI instruction creates a new risk class.</p>
+<ul>
+<li>Policymakers, biosecurity experts, and synthetic DNA providers.</li>
+</ul>
+<p><strong>Technical / Product angle</strong>:
+The letter requests Congress mandate biosecurity screening of all synthetic DNA providers operating in the United States.</p>
+<hr />
+<h2>📰 Also worth reading</h2>
+<ul>
+<li><strong>Google Upgrades Search with Gemini 3.5 Flash as Default Model in AI Mode</strong> · Google The Keyword (June 10)</li>
+</ul>
+<p>Google replaced its previous default with Gemini 3.5 Flash, delivering sustained frontier performance for agents and coding globally.</p>
+<ul>
+<li><strong>Boston Dynamics Partners with Google DeepMind on Industrial AI for Spot Robot</strong> · dentro.de/ai (June 2026)</li>
+</ul>
+<p>Spot integrates Gemini Robotics-ER 1.6 for enhanced spatial reasoning, autonomous decision-making, and continuous learning in industrial environments.</p>
+<ul>
+<li><strong>JPMorgan Chase Formalizes AI as Core Infrastructure with $19.8B 2026 Budget</strong> · Crescendo AI (June 2026)</li>
+</ul>
+<p>JPMorgan reclassified AI from experimental R&amp;D to core infrastructure, dedicating 2,000 staff and projecting $2.5 billion annual value through agents, cybersecurity hardening, and personalized banking.</p>
+<ul>
+<li><strong>OpenAI Launches Rosalind Biodefense for Pandemic Preparedness and Biosecurity</strong> · Build Fast With AI (June 7)</li>
+</ul>
+<p>Vetted developers and US government partners working on pandemic preparedness, biosecurity threat identification, and public health research are eligible for GPT-Rosalind access.</p>
+<ul>
+<li><strong>Supabase Closes $500M Funding Round at $10.5B Valuation</strong> · Crunchbase (June 5)</li>
+</ul>
+<p>The open-source AI developer-tools platform raised $500M led by GIC, expanding its platform for developers and AI app builders.</p>
+<ul>
+<li><strong>Google DeepMind Unveils TurboQuant Algorithm for KV Cache Efficiency</strong> · Crescendo AI (June 2026)</li>
+</ul>
+<p>TurboQuant combines PolarQuant vector rotation and Quantized Johnson-Lindenstrauss compression, allowing massive context windows to run far more efficiently and accelerating the shift from raw parameter scaling.</p>
+<hr />
+<h2>🔍 Pattern of the day</h2>
+<p>Anthropic's $965B Series H valuation (late May) now exceeds OpenAI's $852B private valuation, with run-rate revenue at $47B vs OpenAI's $24B+, placing Anthropic first as of June 1.
+ Concurrently,
+Anthropic's IPO filing disclosed revenue growth from $10B annually to $47B run-rate—a 5x jump—with the $65B Series H now moving the company toward public markets.
+ Meanwhile,
+Microsoft's 2026 CapEx reached $190B, yet AI services have generated only $37B ARR, raising ROI concerns,
+ signaling that <strong>valuation momentum and revenue acceleration are diverging from capital efficiency in enterprise AI deployment</strong>. The race is now tilting toward companies capturing operational value faster than they spend.</p>
+<hr />
+<h2>⚠️ Source notes</h2>
+<p><strong>Direct contributors</strong>: AI Flash Report · Build Fast With AI · Crescendo AI · Crunchbase · Google The Keyword · dentro.de/ai · Yellow.com</p>
+<p><strong>Note</strong>: All URLs confirmed from primary source publications. One URL flag: dentro.de/ai index article structure unconfirmed beyond domain level.</p>
+
+    <!-- Archive -->
+    <div class="archive-section">
+      <h2>Archive</h2>
+      <div class="archive-nav"><details class="month-item">
+  <summary>2026-06 <span class="month-count">1 edition</span></summary>
+  <ul class="day-list">
+    <li data-date="2026-06-10"><a href="/archive/2026-06/2026-06-10.html">2026-06-10</a></li>
+  </ul>
+</details></div>
+    </div>
+
+  </div>
+
+  <div id="footer">
+    <div class="footer-meta">Generated by Claude + Web Search · 2026-06-10 09:08 BST</div>
+    <div>© 2026 hiworld · <a href="https://hiworld.uk/">hiworld.uk</a></div>
+  </div>
+
+  <script>
+    // Highlight today's entry in the archive nav using UK local time.
+    // en-CA locale produces YYYY-MM-DD format natively — no manual reformatting needed.
+    (function () {
+      var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' });
+      var li = document.querySelector('[data-date="' + today + '"]');
+      if (!li) return;
+      li.classList.add('active');
+      var a = li.querySelector('a');
+      if (a) a.innerHTML = today + ' <span class="today-tag">today</span>';
+    })();
+  </script>
+
+</body>
+</html>
