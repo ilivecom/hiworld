@@ -269,6 +269,15 @@ def clean_briefing(text: str) -> str:
     if match:
         text = text[match.start():]
 
+    # 1b. Remove redundant "hiworld daily — DATE" title heading that Claude
+    #     sometimes generates — it duplicates the hero-meta breadcrumb on screen.
+    text = re.sub(
+        r'^#{1,3}\s+[^\n]*hiworld\s+daily[^\n]*\n+',
+        '',
+        text,
+        flags=re.MULTILINE | re.IGNORECASE,
+    )
+
     # 2. Fix broken bold spanning newlines: **\ntext\n** → **text**
     text = re.sub(
         r'\*\*\s*\n([^\n*]{1,200})\n\s*\*\*',
