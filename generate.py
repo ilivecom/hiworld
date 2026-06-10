@@ -399,7 +399,8 @@ HTML_TEMPLATE = """\
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hiworld daily · [[DATE_LONG]]</title>
   <meta name="description" content="Executive AI &amp; technology intelligence briefing — [[DATE_LONG]]" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <!-- Outfit ExtraBold: geometric sans-serif for the wordmark logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
