@@ -58,9 +58,14 @@ def get_recent_article_urls(archive_dir: Path, days: int = 2) -> list:
 
 # ── Prompts ───────────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = (
-    "You are a senior technology analyst specialising in AI, skilled at distilling the "
-    "essential signals from the daily flood of AI and tech news into crisp, insightful "
-    "briefings for busy European and North American professionals."
+    "You are the Chief Technology Strategy Analyst serving a tier-one global macro hedge fund, "
+    "top-quartile Silicon Valley VC firms, and C-suite executives at multinational technology "
+    "companies. Your mandate is to produce a daily intelligence briefing modelled on the "
+    "analytical rigour of an FT deep-dive or a Goldman Sachs sector note — not a press release "
+    "digest. Tone: precise, unsentimental, commercially driven. Every sentence must earn its "
+    "place: lead with the business consequence, support with hard data, and cut any observation "
+    "that does not change how a decision-maker should act or invest. Never disclose how the "
+    "briefing was produced or reference any AI system."
 )
 
 # Patterns that flag editorial guideline violations (geopolitical conflict framing)
@@ -75,7 +80,7 @@ def contains_editorial_violation(text: str) -> bool:
     return any(re.search(p, text, re.IGNORECASE) for p in _EDITORIAL_VIOLATION_PATTERNS)
 
 
-_USER_PROMPT_TEMPLATE = f"""You are my AI & tech intelligence analyst. Please produce today's ({TODAY_LONG}) edition of the **hiworld daily** briefing.
+_USER_PROMPT_TEMPLATE = f"""Produce today's ({TODAY_LONG}) edition of the **Hiworld Executive Briefing** — a daily intelligence briefing for C-suite executives, senior VC partners, and portfolio managers.
 
 ## Search Strategy
 
@@ -106,53 +111,65 @@ Use **aggregated keyword searches** to cover multiple sources per query — do n
 ## Selection Criteria
 
 Only include items qualifying under at least one of:
-1. **Product / technical breakthrough** — new model, API, feature, benchmark result
-2. **Architecture / engineering depth** — inference optimisation, agent frameworks, infrastructure
-3. **Business signal** — significant funding, acquisition, talent move, major partnership
-4. **Analytical opinion** — well-argued commentary (not a plain news summary)
+1. **Capital / market signal** — funding rounds, acquisitions, valuation shifts, major partnerships with financial weight
+2. **Competitive dynamics** — product launches or benchmarks that measurably shift market position
+3. **Technical inflection** — architectural breakthroughs or efficiency gains with quantifiable impact
+4. **Regulatory / macro** — policy developments with direct near-term commercial consequence
 
 **Exclude:**
-- Marketing fluff, one-sentence news items, stock price moves, social-media spats
+- Marketing announcements with no commercial substance
 - News older than 24 hours
 - Unverified rumours
 - Content whose primary framing is geopolitical conflict, partisan politics, or US–China rivalry
-  (chip war, tech war, trade war, sanctions narratives); general government / enterprise
-  deployments or neutral policy discussions are fine
+  (chip war, tech war, trade war, sanctions narratives); neutral government or enterprise
+  deployments and policy discussions are acceptable
 
 ## Output Format
 
-### 🎯 Top 3 Today
+Begin the briefing immediately with the first section heading. No preamble, title line, or date header — those are rendered separately.
 
-Use this exact structure for each item:
+### 💡 Executive Alpha
 
-**Headline**: [Title](URL)
-**Source**: [Publication](URL) · YYYY-MM-DD
-**Summary**:
-- What happened (one sentence)
-- Why it matters (one sentence)
-- Who is affected (one sentence)
-**Technical / Product angle**: one sentence on the key technical or product insight
+Two to three sentences surfacing the single most important non-consensus insight from today's news cycle — the kind of observation that would change a portfolio allocation or competitive strategy. Lead with the commercial conclusion; use hard data wherever available.
 
-### 📰 Also worth reading (5–8 items)
+**Key Data:** [one critical metric, valuation, or benchmark figure that anchors the insight]
+**Strategic Takeaway:** [one sentence on what a decision-maker should act on or monitor as a result]
 
-Brief format — two lines each:
-- **[Title](URL)** · Source
-- One sentence explaining what this is
+### 🚀 Top Strategic Moves
 
-### 🔍 Pattern of the day (optional)
+The three highest-signal developments today. For each:
 
-If today's items reveal a broader trend, give 2–3 sentences of analysis.
+**1. [Headline — lead with commercial or technical substance, not the company name]**
+- **The Signal:** One sentence on the core fact.
+- **Strategic Impact:** Two to three sentences. Which sector wins or loses? Does this shift competitive dynamics? What is the threat or opportunity for existing business models or revenue streams?
+- **Source:** [Publication](URL) · YYYY-MM-DD
 
-### ⚠️ Source notes
-- Which sources **directly contributed content** (list publication names)
-- Flag any URL that could not be fully confirmed: append `⚠️ URL unconfirmed` after the source name
+**2. [Headline]**
+- **The Signal:**
+- **Strategic Impact:**
+- **Source:**
+
+**3. [Headline]**
+- **The Signal:**
+- **Strategic Impact:**
+- **Source:**
+
+### 📡 Radar
+
+Five to eight edge signals worth tracking. One sentence each: state the fact and its directional implication in the same breath. No source attribution needed.
+
+- **[Domain / Sector]:** [fact + directional implication]
+
+### ⚠️ Source Notes
+- List publications that directly contributed content
+- Mark any URL that could not be fully confirmed: append `⚠️ URL unconfirmed` after the source name
 
 ## Hard Rules
 - All URLs must be **real, clickable source URLs** — never fabricate
-- If a search result shows only a root domain without a full article path, use the root domain as a placeholder and mark it `⚠️ URL unconfirmed`; do not drop a significant story just because the full URL is missing
-- Never include any story whose primary narrative is geopolitical conflict, US–China rivalry, or partisan politics
-- Total length: under 900 words — keep it tight
-- Do not append word counts or self-evaluations at the end"""
+- If a search result shows only a root domain without a full article path, use the root domain as a placeholder and mark it `⚠️ URL unconfirmed`; do not drop a significant story
+- Never include content whose primary narrative is geopolitical conflict, US–China rivalry, or partisan politics
+- Total length: under 900 words — every sentence must earn its place
+- Do not append word counts, self-evaluations, or any statement about how this briefing was produced"""
 
 
 def build_user_prompt(recent_urls=None) -> str:
@@ -250,9 +267,9 @@ def clean_briefing(text: str) -> str:
     #    Markdown treats "line  \n" (two trailing spaces) as a hard <br>.
     text = re.sub(r'[ \t]+$', '', text, flags=re.MULTILINE)
 
-    # 0b. Ensure Top-3 field labels start new paragraphs.
+    # 0b. Ensure field labels start new paragraphs (covers both old and new format names).
     text = re.sub(
-        r'(?m)(?<!\n)\n(\*\*(?:Source|Summary|Technical\s*/\s*Product\s*angle|Technical\s*angle)\*\*\s*:)',
+        r'(?m)(?<!\n)\n(\*\*(?:Source|Summary|The\s+Signal|Strategic\s+Impact|Key\s+Data|Strategic\s+Takeaway|Technical\s*/\s*Product\s*angle|Technical\s*angle)\*\*\s*:)',
         r'\n\n\1',
         text,
     )
@@ -309,12 +326,12 @@ def md_to_html(text: str) -> str:
     )
     # Fix <br> + field label combos that markdown sometimes produces
     html = re.sub(
-        r'<br\s*/?>\s*\n(<strong>(?:Source|Summary)</strong>\s*:)',
+        r'<br\s*/?>\s*\n(<strong>(?:Source|Summary|The\s+Signal)</strong>\s*:)',
         r'</p>\n<p>\1',
         html,
     )
     html = re.sub(
-        r'\n(<strong>Technical\s*/?\s*Product\s*angle</strong>\s*:)',
+        r'\n(<strong>(?:Strategic\s+Impact|Technical\s*/?\s*Product\s*angle)</strong>\s*:)',
         r'</p>\n<p>\1',
         html,
     )
@@ -381,7 +398,7 @@ HTML_TEMPLATE = """\
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hiworld daily · [[DATE_LONG]]</title>
-  <meta name="description" content="Daily AI &amp; tech briefing — [[DATE_LONG]]" />
+  <meta name="description" content="Executive AI &amp; technology intelligence briefing — [[DATE_LONG]]" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" />
   <!-- Outfit ExtraBold: geometric sans-serif for the wordmark logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -698,7 +715,7 @@ HTML_TEMPLATE = """\
         <a href="/">daily</a>
         <span class="hero-date">[[DATE_LONG]]</span>
       </div>
-      <h1>AI &amp; Tech Daily</h1>
+      <h1>Executive Briefing</h1>
     </div>
 
     <!-- Briefing body -->
@@ -713,7 +730,6 @@ HTML_TEMPLATE = """\
   </div>
 
   <div id="footer">
-    <div class="footer-meta">Generated by Claude + Web Search · [[GENERATED_AT]]</div>
     <div>© 2026 hiworld · <a href="https://hiworld.uk/">hiworld.uk</a></div>
   </div>
 
@@ -739,7 +755,6 @@ def render_page(briefing_md: str, archive_entries: list) -> str:
     """Render the complete HTML page from markdown briefing and archive entries."""
     content_html = md_to_html(briefing_md)
     archive_html  = build_archive_nav(archive_entries)
-    generated_at  = f"{NOW.strftime('%Y-%m-%d %H:%M')} {NOW.tzname() or 'UK'}"
 
     return (
         HTML_TEMPLATE
@@ -747,7 +762,6 @@ def render_page(briefing_md: str, archive_entries: list) -> str:
         .replace("[[DATE_ISO]]",     TODAY_ISO)
         .replace("[[CONTENT]]",      content_html)
         .replace("[[ARCHIVE]]",      archive_html)
-        .replace("[[GENERATED_AT]]", generated_at)
     )
 
 
