@@ -268,8 +268,9 @@ def clean_briefing(text: str) -> str:
     text = re.sub(r'[ \t]+$', '', text, flags=re.MULTILINE)
 
     # 0b. Ensure field labels start new paragraphs (covers both old and new format names).
+    # Handles both **Label**: (colon outside bold) and **Label:** (colon inside bold).
     text = re.sub(
-        r'(?m)(?<!\n)\n(\*\*(?:Source|Summary|The\s+Signal|Strategic\s+Impact|Key\s+Data|Strategic\s+Takeaway|Technical\s*/\s*Product\s*angle|Technical\s*angle)\*\*\s*:)',
+        r'(?m)(?<!\n)\n(\*\*(?:Source|Summary|The\s+Signal|Strategic\s+Impact|Key\s+Data|Strategic\s+Takeaway|Technical\s*/\s*Product\s*angle|Technical\s*angle):?\*\*:?)',
         r'\n\n\1',
         text,
     )
@@ -324,15 +325,22 @@ def md_to_html(text: str) -> str:
         text,
         extensions=["extra", "sane_lists"],
     )
-    # Fix <br> + field label combos that markdown sometimes produces
+    # Fix <br> + field label combos that markdown sometimes produces.
+    # Handles both **Label**: (colon outside bold) and **Label:** (colon inside bold).
     html = re.sub(
-        r'<br\s*/?>\s*\n(<strong>(?:Source|Summary|The\s+Signal)</strong>\s*:)',
+        r'<br\s*/?>\s*\n(<strong>(?:Source|Summary|The\s+Signal):?</strong>:?)',
         r'</p>\n<p>\1',
         html,
     )
     html = re.sub(
-        r'\n(<strong>(?:Strategic\s+Impact|Technical\s*/?\s*Product\s*angle)</strong>\s*:)',
+        r'\n(<strong>(?:Strategic\s+Impact|Technical\s*/?\s*Product\s*angle):?</strong>:?)',
         r'</p>\n<p>\1',
+        html,
+    )
+    # Inject field-label class on Key Data / Strategic Takeaway paragraphs
+    html = re.sub(
+        r'<p>(<strong>(?:Key\s+Data|Strategic\s+Takeaway):?</strong>:?)',
+        r'<p class="field-label">\1',
         html,
     )
     return html
@@ -674,6 +682,18 @@ HTML_TEMPLATE = """\
     #footer a { color: #008F84; }
     .footer-meta { margin-bottom: 4px; }
 
+    /* ── Field labels (Key Data, Strategic Takeaway) ── */
+    p.field-label {
+      padding: 7px 12px 7px 14px;
+      background: rgba(0, 194, 179, 0.06);
+      border-left: 2px solid rgba(0, 194, 179, 0.4);
+      border-radius: 0 6px 6px 0;
+      margin: 8px 0 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 1150px) {
       #logo {
@@ -685,6 +705,7 @@ HTML_TEMPLATE = """\
       #content { margin-top: 60px; padding: 34px 28px 28px; }
     }
     @media (max-width: 767px) {
+      body { font-size: 15px; line-height: 1.7; }
       #logo { font-size: 19px; }
       #content {
         margin-top: 56px;
