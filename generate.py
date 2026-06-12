@@ -130,7 +130,7 @@ Begin the briefing immediately with the first section heading. No preamble, titl
 
 ### 💡 Executive Alpha
 
-Two to three sentences surfacing the single most important non-consensus insight from today's news cycle — the kind of observation that would change a portfolio allocation or competitive strategy. Lead with the commercial conclusion; use hard data wherever available.
+Write **2–3 short paragraphs** (1–2 sentences each) surfacing the single most important non-consensus insight from today's news cycle — the kind of observation that would change a portfolio allocation or competitive strategy. Do not merge all observations into one long paragraph. Lead with the commercial conclusion; use hard data wherever available.
 
 **Key Data:** [one critical metric, valuation, or benchmark figure that anchors the insight]
 **Strategic Takeaway:** [one sentence on what a decision-maker should act on or monitor as a result]
@@ -161,7 +161,7 @@ Five to eight edge signals worth tracking. One sentence each: state the fact and
 - **[Domain / Sector]:** [fact + directional implication]
 
 ### ⚠️ Source Notes
-- List publications that directly contributed content
+- List publications that directly contributed content — plain names only, no bold or other formatting
 - Mark any URL that could not be fully confirmed: append `⚠️ URL unconfirmed` after the source name
 
 ## Hard Rules
@@ -382,6 +382,11 @@ def md_to_html(text: str) -> str:
         r'<h3>\1</h3>',
         html,
     )
+
+    # Strip bold from Source Notes list items where the entire <li> content is
+    # wrapped in <strong> (e.g. <li><strong>Bloomberg Technology</strong></li>).
+    # These are plain publication names — bold adds no meaning here.
+    html = re.sub(r'<li><strong>([^<]+)</strong></li>', r'<li>\1</li>', html)
 
     return html
 
