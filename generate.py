@@ -450,9 +450,10 @@ HTML_TEMPLATE = """\
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hiworld daily · [[DATE_LONG]]</title>
-  <meta name="description" content="Executive AI &amp; technology intelligence briefing — [[DATE_LONG]]" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>[[PAGE_TITLE]]</title>
+  <meta name="description" content="[[META_DESC]]" />
+  <link rel="canonical" href="[[CANONICAL]]" />
+[[OG_TAGS]]  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <!-- Outfit ExtraBold: geometric sans-serif for the wordmark logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -836,13 +837,68 @@ HTML_TEMPLATE = """\
 """
 
 
-def render_page(briefing_md: str, archive_entries: list) -> str:
-    """Render the complete HTML page from markdown briefing and archive entries."""
+def render_page(briefing_md: str, archive_entries: list, page_type: str = "archive") -> str:
+    """Render the complete HTML page from markdown briefing and archive entries.
+
+    page_type:
+      "index"   — homepage (stable title/description for SEO)
+      "archive" — dated archive copy (date-specific + content-extracted meta)
+    """
+    import html as _html
+
     content_html = md_to_html(briefing_md)
     archive_html  = build_archive_nav(archive_entries)
 
+    SITE_URL = "https://hiworld.uk"
+
+    if page_type == "index":
+        page_title = "hiworld daily — AI &amp; Technology Intelligence"
+        meta_desc  = ("Daily intelligence briefing for executives, investors, and senior operators. "
+                      "Curated AI and technology signals, strategic analysis, and non-consensus insights.")
+        canonical  = f"{SITE_URL}/"
+        og_tags = (
+            f'  <meta property="og:type" content="website" />\n'
+            f'  <meta property="og:title" content="hiworld daily — AI &amp; Technology Intelligence" />\n'
+            f'  <meta property="og:description" content="{_html.escape(meta_desc)}" />\n'
+            f'  <meta property="og:url" content="{SITE_URL}/" />\n'
+            f'  <meta name="twitter:card" content="summary" />\n'
+            f'  <meta name="twitter:title" content="hiworld daily — AI &amp; Technology Intelligence" />\n'
+            f'  <meta name="twitter:description" content="{_html.escape(meta_desc)}" />\n'
+        )
+    else:  # archive
+        page_title = f"hiworld daily · {TODAY_LONG}"
+        # Extract the first substantive sentence from the briefing for the meta description
+        raw_desc = ""
+        for line in briefing_md.splitlines():
+            stripped = line.strip()
+            if stripped and not stripped.startswith("#") and not stripped.startswith("-") and not stripped.startswith("*"):
+                clean = re.sub(r'\*{1,2}([^*]+)\*{1,2}', r'\1', stripped)
+                clean = re.sub(r'_{1,2}([^_]+)_{1,2}', r'\1', clean)
+                raw_desc = clean[:200] + ("…" if len(clean) > 200 else "")
+                break
+        if not raw_desc:
+            raw_desc = f"Executive AI & technology intelligence briefing — {TODAY_LONG}"
+        meta_desc  = raw_desc
+        canonical  = f"{SITE_URL}/archive/{TODAY_ISO[:7]}/{TODAY_ISO}.html"
+        esc_title  = _html.escape(page_title)
+        esc_desc   = _html.escape(meta_desc)
+        og_tags = (
+            f'  <meta property="og:type" content="article" />\n'
+            f'  <meta property="og:title" content="{esc_title}" />\n'
+            f'  <meta property="og:description" content="{esc_desc}" />\n'
+            f'  <meta property="og:url" content="{canonical}" />\n'
+            f'  <meta property="article:published_time" content="{TODAY_ISO}" />\n'
+            f'  <meta name="twitter:card" content="summary" />\n'
+            f'  <meta name="twitter:title" content="{esc_title}" />\n'
+            f'  <meta name="twitter:description" content="{esc_desc}" />\n'
+        )
+
     return (
         HTML_TEMPLATE
+        .replace("[[PAGE_TITLE]]",   page_title)
+        .replace("[[META_DESC]]",    meta_desc)
+        .replace("[[CANONICAL]]",    canonical)
+        .replace("[[OG_TAGS]]",      og_tags)
         .replace("[[DATE_LONG]]",    TODAY_LONG)
         .replace("[[DATE_ISO]]",     TODAY_ISO)
         .replace("[[CONTENT]]",      content_html)
@@ -927,18 +983,19 @@ def main() -> None:
         archive_entries.append({"date": TODAY_ISO})
         archive_entries.sort(key=lambda e: e["date"])
 
-    # Render full HTML page
-    page_html = render_page(briefing_md, archive_entries)
+    # Render HTML — archive and homepage use different SEO meta
+    archive_html = render_page(briefing_md, archive_entries, page_type="archive")
+    index_html   = render_page(briefing_md, archive_entries, page_type="index")
 
     # Save archive copy (monthly subdir: docs/archive/YYYY-MM/YYYY-MM-DD.html)
     month_dir    = archive_dir / TODAY_ISO[:7]
     month_dir.mkdir(parents=True, exist_ok=True)
     archive_file = month_dir / f"{TODAY_ISO}.html"
-    archive_file.write_text(page_html, encoding="utf-8")
+    archive_file.write_text(archive_html, encoding="utf-8")
     print(f"✅ Saved  → docs/archive/{TODAY_ISO[:7]}/{TODAY_ISO}.html")
 
     # Update index (latest briefing = homepage)
-    (docs / "index.html").write_text(page_html, encoding="utf-8")
+    (docs / "index.html").write_text(index_html, encoding="utf-8")
     print(f"✅ Updated → docs/index.html")
 
     # Persist archive index only when a new entry was added
