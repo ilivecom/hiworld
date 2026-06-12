@@ -317,6 +317,24 @@
       h3 { font-size: 18px; margin-top: 20px; }
       p, li { line-height: 1.82; }
     }
+
+    /* ── Strategic Moves: h3 numbered items & their sub-item lists ── */
+    h3 + ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 6px;
+    }
+    h3 + ul > li {
+      border-left: 2px solid #f0f0f0;
+      padding: 4px 0 4px 14px;
+      margin: 6px 0;
+    }
+    h3 + ul > li:last-child {
+      font-size: 13px;
+      color: #888;
+      border-left-color: transparent;
+      padding-left: 14px;
+    }
   </style>
 </head>
 <body>
@@ -340,86 +358,65 @@
 
     <!-- Briefing body -->
     <h2>💡 Executive Alpha</h2>
-<p>Anthropic has overtaken OpenAI in enterprise AI spending for the first time in 2026, with Claude capturing ~42% of the coding/tools market and Claude Code alone generating $2.5B+ annualized run-rate revenue.
- The $965B Series H valuation combined with
-a confidential S-1 filing on June 1, 2026
- signals capital markets have repriced the competitive hierarchy in frontier AI—and the shift is being driven by narrow, defensible verticalization (coding) rather than horizontal generalist capability.
-Megacap technology companies plan to invest more than $300 billion in AI-related spending in the current cycle
-, but that capital concentration risk means foundation model labs will increasingly compete for share of a smaller set of high-ROI enterprise segments. Frontier-model buyers now demand measurable unit economics on specific workflows, not benchmark bragging rights.</p>
-<p class="field-label"><strong>Key Data:</strong>
-Anthropic projects $10.9B Q2 2026 revenue with first quarterly operating profit of approximately $559M
-.</p>
+<p>Anthropic has overtaken OpenAI in enterprise AI spending for the first time in 2026, with Claude capturing ~42% of the coding/tools market and Claude Code alone generating $2.5B+ annualized run-rate revenue. The $965B Series H valuation combined with a confidential S-1 filing on June 1, 2026 signals capital markets have repriced the competitive hierarchy in frontier AI—and the shift is being driven by narrow, defensible verticalization (coding) rather than horizontal generalist capability. Megacap technology companies plan to invest more than $300 billion in AI-related spending in the current cycle, but that capital concentration risk means foundation model labs will increasingly compete for share of a smaller set of high-ROI enterprise segments. Frontier-model buyers now demand measurable unit economics on specific workflows, not benchmark bragging rights.</p>
+<p class="field-label"><strong>Key Data:</strong> Anthropic projects $10.9B Q2 2026 revenue with first quarterly operating profit of approximately $559M.</p>
 <p class="field-label"><strong>Strategic Takeaway:</strong> Investor thesis has shifted from horizontal capability race to vertical defensibility—teams building narrow-but-defensible AI agents in regulated workflows or high-friction knowledge work will outcompete broader platforms on both funding access and acquirer interest.</p>
 <hr />
-<h3>🚀 Top Strategic Moves</h3>
-<p><strong>1.
-SpaceX IPO pricing today (June 11) targeting $1.75 trillion valuation and $75B raise
-**
-- </strong>The Signal:<strong>
-Cerebras IPO'd May 14, SpaceX roadshow begins June 8, opening the AI IPO supercycle
-.
-- </strong>Strategic Impact:<strong> The largest technology IPO in history closes the $3T+ AI infrastructure financing window and validates public market appetite for AI-as-essential-infrastructure rather than software. Immediate cascade risk:
-pressure is intensifying on the IPO markets as a backlog of companies with unprecedented private capital reaches public liquidity windows
-. Follow-on listings from OpenAI and Anthropic will face lower multiples if SpaceX markets cool on leverage and valuation multiples.
-- </strong>Source:** AI Funding Tracker · June 11, 2026</p>
-<p><strong>2.
-Anthropic published "When AI builds itself" on June 4, proposing a globally coordinated pause on frontier AI development, arguing systems are accelerating their own development faster than existing safety frameworks
-**
-- </strong>The Signal:<strong>
-As of May 2026, over 80% of code merged into Anthropic's production codebase was authored by Claude; external benchmarks show the length of tasks AI models can reliably complete autonomously doubling roughly every four months
-.
-- </strong>Strategic Impact:<strong> The proposal's timing—delivered days before Anthropic's IPO filing—frames safety governance as a hard regulatory risk that will shape how public markets value frontier labs going forward.
-Enterprise deploying autonomous AI agents are already confronting governance questions; Gartner predicts 40% of enterprises will demote or decommission autonomous AI agents by 2027 after governance failures
-. Regulatory divergence (US voluntary, EU statutory) now directly affects model deployment economics across regions.
-- </strong>Source:** Shumaker, Loop &amp; Kendrick LLP · June 4–9, 2026</p>
-<p><strong>3.
-Claude commands leading share of U.S. enterprise and API spend, driven by superior performance in coding and complex reasoning tasks combined with enterprise-friendly policies like explicit non-training on customer data
-**
-- </strong>The Signal:<strong>
-In the booming generative AI market, Anthropic has zoomed ahead largely thanks to Claude Code; OpenAI shifted much of its focus from consumer to enterprise where Codex is competing against Claude Code
-.
-- </strong>Strategic Impact:<strong> For the first time since 2021, a second-mover on frontier capability has captured enterprise wallet-share from market leader. This breaks the incumbent's distribution and pricing power in the highest-margin segment.
-Coding tools are becoming an increasingly big target for Google and Microsoft as they try to catch Anthropic and OpenAI in the red-hot market
-—but at $100/month developer subscriptions, margin structures no longer favor differentiated AI labs without proprietary distribution. Vertical consolidation (Anthropic buying or building coding-adjacent products) becomes a near-term M&amp;A signal.
-- </strong>Source:** CNBC / Bloomberg · June 1–10, 2026</p>
+<h2>🚀 Top Strategic Moves</h2>
+<h3>1. SpaceX IPO pricing today (June 11) targeting $1.75 trillion valuation and $75B raise</h3>
+<ul>
+  <li><strong>The Signal:</strong> Cerebras IPO'd May 14, SpaceX roadshow begins June 8, opening the AI IPO supercycle.</li>
+  <li><strong>Strategic Impact:</strong> The largest technology IPO in history closes the $3T+ AI infrastructure financing window and validates public market appetite for AI-as-essential-infrastructure rather than software. Immediate cascade risk: pressure is intensifying on the IPO markets as a backlog of companies with unprecedented private capital reaches public liquidity windows. Follow-on listings from OpenAI and Anthropic will face lower multiples if SpaceX markets cool on leverage and valuation multiples.</li>
+  <li>Source: AI Funding Tracker · June 11, 2026</li>
+</ul>
+<h3>2. Anthropic published "When AI builds itself" on June 4, proposing a globally coordinated pause on frontier AI development, arguing systems are accelerating their own development faster than existing safety frameworks</h3>
+<ul>
+  <li><strong>The Signal:</strong> As of May 2026, over 80% of code merged into Anthropic's production codebase was authored by Claude; external benchmarks show the length of tasks AI models can reliably complete autonomously doubling roughly every four months.</li>
+  <li><strong>Strategic Impact:</strong> The proposal's timing—delivered days before Anthropic's IPO filing—frames safety governance as a hard regulatory risk that will shape how public markets value frontier labs going forward. Enterprise deploying autonomous AI agents are already confronting governance questions; Gartner predicts 40% of enterprises will demote or decommission autonomous AI agents by 2027 after governance failures. Regulatory divergence (US voluntary, EU statutory) now directly affects model deployment economics across regions.</li>
+  <li>Source: Shumaker, Loop &amp; Kendrick LLP · June 4–9, 2026</li>
+</ul>
+<h3>3. Claude commands leading share of U.S. enterprise and API spend, driven by superior performance in coding and complex reasoning tasks combined with enterprise-friendly policies like explicit non-training on customer data</h3>
+<ul>
+  <li><strong>The Signal:</strong> In the booming generative AI market, Anthropic has zoomed ahead largely thanks to Claude Code; OpenAI shifted much of its focus from consumer to enterprise where Codex is competing against Claude Code.</li>
+  <li><strong>Strategic Impact:</strong> For the first time since 2021, a second-mover on frontier capability has captured enterprise wallet-share from market leader. This breaks the incumbent's distribution and pricing power in the highest-margin segment. Coding tools are becoming an increasingly big target for Google and Microsoft as they try to catch Anthropic and OpenAI in the red-hot market—but at $100/month developer subscriptions, margin structures no longer favor differentiated AI labs without proprietary distribution. Vertical consolidation (Anthropic buying or building coding-adjacent products) becomes a near-term M&amp;A signal.</li>
+  <li>Source: CNBC / Bloomberg · June 1–10, 2026</li>
+</ul>
 <hr />
-<h3>📡 Radar</h3>
+<h2>📡 Radar</h2>
 <ul>
 <li>
-<p><strong>Infrastructure cost dynamics:</strong>
-Microsoft expects total 2026 CapEx of $190B, with $25B of increase from surging memory and storage component prices, while its AI services have generated $37B ARR on $97B spend over four quarters
-—frontier model economics are hitting wall of negative ROI on infrastructure spend.</p>
+<p><strong>Infrastructure cost dynamics:</strong> Microsoft expects total 2026 CapEx of $190B, with $25B of increase from surging memory and storage component prices, while its AI services have generated $37B ARR on $97B spend over four quarters—frontier model economics are hitting wall of negative ROI on infrastructure spend.</p>
 </li>
 <li>
-<p><strong>Agent governance risk:</strong>
-Heads of OpenAI, Anthropic, Google DeepMind, and Microsoft AI signed a joint letter to US Congress on June 5 calling for mandatory screening on synthetic DNA providers, warning that AI advances are eroding technical barriers for weaponizing biological material
-—coordinated safety messaging before IPO season is designed to preempt legislative action, not substitute for it.</p>
+<p><strong>Agent governance risk:</strong> Heads of OpenAI, Anthropic, Google DeepMind, and Microsoft AI signed a joint letter to US Congress on June 5 calling for mandatory screening on synthetic DNA providers, warning that AI advances are eroding technical barriers for weaponizing biological material—coordinated safety messaging before IPO season is designed to preempt legislative action, not substitute for it.</p>
 </li>
 <li>
-<p><strong>Open-weight competitive squeeze:</strong>
-Qwen 3 235B-A22B is the best open-source LLM in 2026 for reasoning and coding; all three top models match GPT-4-class performance on code and math while staying free to deploy
-—proprietary-model pricing power erodes fastest in commodity segments (coding, summarization).</p>
+<p><strong>Open-weight competitive squeeze:</strong> Qwen 3 235B-A22B is the best open-source LLM in 2026 for reasoning and coding; all three top models match GPT-4-class performance on code and math while staying free to deploy—proprietary-model pricing power erodes fastest in commodity segments (coding, summarization).</p>
 </li>
 <li>
-<p><strong>Custom silicon acceleration:</strong>
-Amazon's custom silicon business (Graviton, Trainium, Nitro) has surpassed $20B annual run rate, growing over 100% YoY with major multi-year commitments from OpenAI, Anthropic, Meta, and Uber
-—NVIDIA's near-monopoly on AI inference is breaking at hyperscale.</p>
+<p><strong>Custom silicon acceleration:</strong> Amazon's custom silicon business (Graviton, Trainium, Nitro) has surpassed $20B annual run rate, growing over 100% YoY with major multi-year commitments from OpenAI, Anthropic, Meta, and Uber—NVIDIA's near-monopoly on AI inference is breaking at hyperscale.</p>
 </li>
 <li>
-<p><strong>Capital concentration intensifying:</strong>
-Only 11–14% of enterprise AI pilot projects reach production scale; venture capitalists are quietly advising portfolio companies to prepare for market correction even as valuations hit record highs
-—Series B/C down-round wave imminent for all-but-top-5 orchestration and agent platforms.</p>
+<p><strong>Capital concentration intensifying:</strong> Only 11–14% of enterprise AI pilot projects reach production scale; venture capitalists are quietly advising portfolio companies to prepare for market correction even as valuations hit record highs—Series B/C down-round wave imminent for all-but-top-5 orchestration and agent platforms.</p>
 </li>
 <li>
-<p><strong>Enterprise regulatory mandate:</strong>
-OpenAI told CNBC it would comply with President Trump's executive order requiring voluntary pre-release model reviews; OpenAI's Head of Countries confirmed 30-day federal safety check before release
-—frontier labs now budgeting regulatory delay into product roadmaps.</p>
+<p><strong>Enterprise regulatory mandate:</strong> OpenAI told CNBC it would comply with President Trump's executive order requiring voluntary pre-release model reviews; OpenAI's Head of Countries confirmed 30-day federal safety check before release—frontier labs now budgeting regulatory delay into product roadmaps.</p>
 </li>
 </ul>
 <hr />
-<h3>⚠️ Source Notes</h3>
+<h2>⚠️ Source Notes</h2>
 <ul>
-<li><strong>dentro.de/ai</strong> · <strong>Radical Data Science (Wordpress)</strong> · <strong>AI Funding Tracker</strong> · <strong>Bloomberg Technology</strong> · <strong>CNBC</strong> · <strong>Crunchbase News</strong> · <strong>Shumaker, Loop &amp; Kendrick LLP</strong> · <strong>WaveSpeed Blog</strong> · <strong>QverLabs Blog</strong> · <strong>Luminix Research</strong> · <strong>Yellow.com News</strong></li>
+<li><strong>dentro.de/ai</strong></li>
+<li><strong>Radical Data Science (Wordpress)</strong></li>
+<li><strong>AI Funding Tracker</strong></li>
+<li><strong>Bloomberg Technology</strong></li>
+<li><strong>CNBC</strong></li>
+<li><strong>Crunchbase News</strong></li>
+<li><strong>Shumaker, Loop &amp; Kendrick LLP</strong></li>
+<li><strong>WaveSpeed Blog</strong></li>
+<li><strong>QverLabs Blog</strong></li>
+<li><strong>Luminix Research</strong></li>
+<li><strong>Yellow.com News</strong></li>
 </ul>
 
     <!-- Archive -->

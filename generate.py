@@ -297,11 +297,33 @@ def clean_briefing(text: str) -> str:
     )
 
     # 2. Fix broken bold spanning newlines: **\ntext\n** → **text**
+    #    Handles single-line case first, then multi-line (numbered headlines, etc.)
     text = re.sub(
         r'\*\*\s*\n([^\n*]{1,200})\n\s*\*\*',
         lambda m: f'**{m.group(1).strip()}**',
         text,
     )
+    # 2b. Fix multi-line bold headings — e.g. "**1.\nLong headline\n**"
+    #     Joins all lines between ** markers into a single bold span.
+    text = re.sub(
+        r'\*\*(\d+)\.\s*\n((?:[^\n]{1,400}\n)+?)\s*\*\*',
+        lambda m: '**' + m.group(1) + '. ' + ' '.join(
+            ln.strip() for ln in m.group(2).splitlines() if ln.strip()
+        ) + '**',
+        text,
+    )
+
+    # 2c. Ensure a blank line between a bold line and any immediately following
+    #     list items so the markdown parser correctly renders the list.
+    text = re.sub(r'(\*\*[^\n]+\*\*)\n([-*] )', r'\1\n\n\2', text)
+
+    # 2d. Fix newline immediately before punctuation (LLM line-wrap artifact):
+    #     "word\n." / "word\n," / "word\n;" → "word." / "word," / "word;"
+    text = re.sub(r'\n([.,;!?—])', r'\1', text)
+
+    # 2e. Merge continuation lines that start with a single space
+    #     (LLM wraps long sentences as "line\n continued sentence"):
+    text = re.sub(r'(?<=[^\n])\n( )(?=[A-Za-z0-9"\'(])', ' ', text)
 
     # 3. Remove standalone semicolons used as sentence separators
     text = re.sub(r'^\s*[;]\s*$', '', text, flags=re.MULTILINE)
@@ -343,6 +365,24 @@ def md_to_html(text: str) -> str:
         r'<p class="field-label">\1',
         html,
     )
+
+    # Promote h3 main-section headings to h2 when Claude uses ### instead of ##.
+    # Matches emoji-prefixed headings (💡 🚀 📡 ⚠️).
+    html = re.sub(
+        r'<h3>([\U0001F4A1\U0001F680\U0001F4E1⚠️][^<]+)</h3>',
+        r'<h2>\1</h2>',
+        html,
+    )
+
+    # Convert bold numbered-item paragraphs to h3 headings so they render as
+    # visual section titles rather than plain bold text.
+    # Matches: <p><strong>1. Headline text</strong></p>
+    html = re.sub(
+        r'<p><strong>(\d+\.\s+[^<]+)</strong></p>',
+        r'<h3>\1</h3>',
+        html,
+    )
+
     return html
 
 
@@ -692,6 +732,24 @@ HTML_TEMPLATE = """\
       font-size: 15px;
       line-height: 1.6;
       color: #333;
+    }
+
+    /* ── Strategic Moves: h3 sub-items (Signal / Impact / Source) ── */
+    h3 + ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 4px;
+    }
+    h3 + ul > li {
+      border-left: 2px solid #f0f0f0;
+      padding: 4px 0 4px 12px;
+      margin: 6px 0;
+    }
+    h3 + ul > li:last-child {
+      font-size: 13px;
+      color: #888;
+      border-left-color: transparent;
+      padding-left: 12px;
     }
 
     /* ── Responsive ── */
