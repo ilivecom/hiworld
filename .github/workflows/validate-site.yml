@@ -1,0 +1,16 @@
+name: Validate published site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Validate docs publish tree
+        run: python3 scripts/validate_site.py

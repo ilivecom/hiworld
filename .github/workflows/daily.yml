@@ -23,6 +23,9 @@ jobs:
         with:
           ref: ${{ github.ref_name }}   # always fetch latest main on re-run
 
+      - name: Validate published site
+        run: python3 scripts/validate_site.py
+
       - name: Check if today's briefing already exists
         id: check
         run: |

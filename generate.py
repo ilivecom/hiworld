@@ -454,7 +454,6 @@ HTML_TEMPLATE = """\
   <meta name="description" content="[[META_DESC]]" />
   <link rel="canonical" href="[[CANONICAL]]" />
 [[OG_TAGS]]  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <!-- Outfit ExtraBold: geometric sans-serif for the wordmark logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
